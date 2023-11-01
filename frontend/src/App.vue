@@ -14,36 +14,40 @@ const heros = ref<Hero[]>([
 		avatar: AchillesAvatar,
 		speed: 10,
 		strength: 4,
-		intelligence: '6',
+		intelligence: 6,
 	},
 	{
 		name: 'Odysseus',
 		avatar: OdysseusAvatar,
 		speed: 6,
 		strength: 5,
-		intelligence: '9',
+		intelligence: 9,
 	},
 	{
 		name: 'Hercules',
 		avatar: HerculesAvatar,
 		speed: 6,
 		strength: 10,
-		intelligence: '4',
+		intelligence: 4,
 	},
 ]);
 const hero = ref<Hero | null>(null);
+const bonus = ref(0);
 
-let bonus = ref(0);
-function doBonus() {
-	if(bonus > 5) {
+function doBonus(hero: Hero | null) {
+	if(!hero) {
+		return;
+	}
+	if(bonus.value >= 5) {
 		return alert('Only 5 bonus allowed!');
 	}
-	bonus++; // increase bonus!
+	bonus.value += 1; // increase bonus!
 }
 
-function handleUpdate(input) {
+function handleUpdate(input: Hero) {
 	console.log('change', input);
 	hero.value = input;
+	bonus.value = 0;
 }
 </script>
 
@@ -70,6 +74,7 @@ function handleUpdate(input) {
 				v-on:selected="handleUpdate"
 			></heroPicker>
 			<button
+				type="button"
 				class="
 					border-green-500
 					text-sm text-green-400
@@ -79,7 +84,7 @@ function handleUpdate(input) {
 					py-2
 					rounded
 				"
-				v-on:click="doBonus"
+				v-on:click="doBonus(hero)"
 			>
 				BONUS {{ bonus > 0 ? `(${bonus})` : '' }} ✨
 			</button>
