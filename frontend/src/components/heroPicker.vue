@@ -1,6 +1,7 @@
 <template>
 	<div class="relative">
-		<span
+		<button
+			type="button"
 			class="
 				block
 				w-32
@@ -18,10 +19,14 @@
 				focus-visible:ring-opacity-75
 			"
 			v-on:click="toggleMenu"
+			v-on:keydown.space.exact.prevent="toggleMenu"
+			v-on:keydown.esc.exact="hideMenu"
+			v-on:keydown.shift.tab="hideMenu"
+			v-on:keydown.down.exact.prevent="navigateMenu(0)"
 		>
 			<span v-if="!value">Select a Hero</span>
 			<span v-else v-text="`Selected: ${value?.name}`"></span>
-		</span>
+		</button>
 		<ul
 			v-show="isOpen"
 			class="
@@ -37,7 +42,7 @@
 				shadow-lg
 			"
 		>
-			<li v-for="option in options" v-bind:key="option.name" class="py-1">
+			<li v-for="(option, index) in props.options" v-bind:key="option.name" ref="optionRefs" class="py-1">
 				<a
 					href="#"
 					class="
@@ -50,6 +55,11 @@
 						gap-2
 					"
 					v-on:click="setOption(option)"
+					v-on:keydown.space.exact.prevent="setOption(option)"
+					v-on:keydown.esc.exact="hideMenu"
+					v-on:keydown.tab.exact="closeMenu(index)"
+					v-on:keydown.up.exact.prevent="navigateMenu(index - 1)"
+					v-on:keydown.down.exact.prevent="navigateMenu(index + 1)"
 				>
 					<img
 						v-bind:src="option.avatar"
@@ -65,7 +75,7 @@
 
 <script setup lang="ts">
 import {ref} from 'vue';
-import type {PropType} from 'vue';
+import type {PropType, Ref} from 'vue';
 import type {Hero} from '../types';
 const props = defineProps({
 	value: Object as PropType<Hero | null>,
@@ -74,13 +84,41 @@ const props = defineProps({
 
 const emit = defineEmits(['selected']);
 const isOpen = ref(false);
+const optionRefs: Ref<Array<HTMLElement>> = ref([]);
 
 function toggleMenu() {
 	isOpen.value = !isOpen.value;
 }
 
-function setOption(input) {
-	props.value = input;
+function hideMenu() {
+	isOpen.value = false;
+}
+
+// Helper function to allow us to hide the menu when tabbing off of last item
+function closeMenu(index: number) {
+	if(props.options && index === props.options.length - 1) {
+		hideMenu();
+	}
+}
+
+function navigateMenu(index: number) {
+	if(!props.options || !isOpen.value) {
+		return;
+	}
+
+	// Allow for navigating to bottom from top and to bottom from top
+	let i = index;
+	if(i < 0) {
+		i = props.options.length - 1;
+	}else if(i === props.options.length) {
+		i = 0;
+	}
+
+	(optionRefs.value[i].children[0] as HTMLElement).focus();
+}
+
+function setOption(input: Hero) {
 	emit('selected', input);
+	toggleMenu();
 }
 </script>
