@@ -4,7 +4,7 @@
 			type="button"
 			class="
 				block
-				w-32
+				w-full
 				px-4
 				py-2
 				text-sm
