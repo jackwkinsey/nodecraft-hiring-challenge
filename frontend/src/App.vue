@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref} from 'vue';
+import {computed, ref} from 'vue';
 
 import heroPicker from './components/heroPicker.vue';
 import type {Hero} from './types';
@@ -31,22 +31,33 @@ const heros = ref<Hero[]>([
 		intelligence: 4,
 	},
 ]);
+const baseStatTotal = 20;
+const numberOfStats = 3;
 const hero = ref<Hero | null>(null);
-const bonus = ref(0);
+const bonus = computed(() => {
+	if(!hero.value) {
+		return 0;
+	}
 
-function doBonus(hero: Hero | null) {
-	if(!hero) {
+	const heroStatTotal = hero.value.speed + hero.value.strength + hero.value.intelligence;
+	return Math.floor((heroStatTotal - baseStatTotal) / numberOfStats);
+});
+
+function doBonus() {
+	if(!hero.value) {
 		return;
 	}
 	if(bonus.value >= 5) {
 		return alert('Only 5 bonus allowed!');
 	}
-	bonus.value += 1;
+
+	hero.value.intelligence += 1;
+	hero.value.speed += 1;
+	hero.value.strength += 1;
 }
 
 function handleUpdate(input: Hero) {
 	hero.value = input;
-	bonus.value = 0;
 }
 </script>
 
@@ -83,7 +94,7 @@ function handleUpdate(input: Hero) {
 					py-2
 					rounded
 				"
-				v-on:click="doBonus(hero)"
+				v-on:click="doBonus()"
 			>
 				BONUS {{ bonus > 0 ? `(${bonus})` : '' }} ✨
 			</button>
@@ -101,15 +112,15 @@ function handleUpdate(input: Hero) {
 					<dt class="uppercase text-sm">
 						Speed:
 					</dt>
-					<dd v-text="hero.speed + bonus"></dd>
+					<dd v-text="hero.speed"></dd>
 					<dt class="uppercase text-sm">
 						Strength:
 					</dt>
-					<dd v-text="hero.strength + bonus"></dd>
+					<dd v-text="hero.strength"></dd>
 					<dt class="uppercase text-sm">
 						Intelligence:
 					</dt>
-					<dd v-text="hero.intelligence + bonus"></dd>
+					<dd v-text="hero.intelligence"></dd>
 				</dl>
 			</div>
 		</div>
