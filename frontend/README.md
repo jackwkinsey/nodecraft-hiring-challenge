@@ -18,7 +18,7 @@ Must complete all of these challenges:
 
 - [x] Fix any functional issues with the component that don’t match Vue 3 Component standards and best practices outline on the Vue 3 Docs.
 - [x] Fix the dropdown menu from remaining open always after a hero selection is made.
-- [ ] Ensure all hero stats equal a sum of `20` plus the current amount of bonus. This total should never be above `35` with the bonus included.
+- [x] Ensure all hero stats equal a sum of `20` plus the current amount of bonus. This total should never be above `35` with the bonus included.
 - [x] Add keyboard controls for the drop down hero select button and menu item to be accessible
 - [x] Fix the image so it matches the rounding of its container and doesn’t change width/height when it changes
 
