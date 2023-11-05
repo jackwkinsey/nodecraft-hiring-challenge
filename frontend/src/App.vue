@@ -98,15 +98,15 @@ function handleUpdate(input: Hero) {
 					<span v-text="hero.name"></span>
 				</p>
 				<dl>
-					<dt class="uppercse text-sm">
+					<dt class="uppercase text-sm">
 						Speed:
 					</dt>
 					<dd v-text="hero.speed + bonus"></dd>
-					<dt class="uppercse text-sm">
+					<dt class="uppercase text-sm">
 						Strength:
 					</dt>
 					<dd v-text="hero.strength + bonus"></dd>
-					<dt class="uppercse text-sm">
+					<dt class="uppercase text-sm">
 						Intelligence:
 					</dt>
 					<dd v-text="hero.intelligence + bonus"></dd>
