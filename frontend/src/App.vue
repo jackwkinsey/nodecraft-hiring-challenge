@@ -56,6 +56,12 @@ function doBonus() {
 	hero.value.strength += 1;
 }
 
+function clearHero() {
+	if(hero.value) {
+		hero.value = null;
+	}
+}
+
 function handleUpdate(input: Hero) {
 	hero.value = input;
 }
@@ -100,6 +106,10 @@ function handleUpdate(input: Hero) {
 			</button>
 		</div>
 		<div v-if="hero" class="bg-slate-400 text-black rounded flex gap-2 overflow-hidden">
+			<div
+				class="close-btn absolute ml-2 cursor-pointer font-bold drop-shadow-[0_1px_5px_rgba(255,255,255,0.75)]"
+				v-on:click="clearHero"
+			></div>
 			<img v-bind:src="hero.avatar" class="w-52 h-52 object-cover">
 			<div>
 				<h2 class="uppercase text-xs mb-4">
@@ -126,3 +136,9 @@ function handleUpdate(input: Hero) {
 		</div>
 	</div>
 </template>
+
+<style>
+.close-btn::after {
+  content: "\00d7";
+}
+</style>
