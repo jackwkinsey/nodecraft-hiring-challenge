@@ -41,11 +41,10 @@ function doBonus(hero: Hero | null) {
 	if(bonus.value >= 5) {
 		return alert('Only 5 bonus allowed!');
 	}
-	bonus.value += 1; // increase bonus!
+	bonus.value += 1;
 }
 
 function handleUpdate(input: Hero) {
-	console.log('change', input);
 	hero.value = input;
 	bonus.value = 0;
 }
@@ -89,8 +88,8 @@ function handleUpdate(input: Hero) {
 				BONUS {{ bonus > 0 ? `(${bonus})` : '' }} ✨
 			</button>
 		</div>
-		<div v-if="hero" class="bg-slate-400 text-black rounded flex gap-2">
-			<img v-bind:src="hero.avatar" class="w-52">
+		<div v-if="hero" class="bg-slate-400 text-black rounded flex gap-2 overflow-hidden">
+			<img v-bind:src="hero.avatar" class="w-52 h-52 object-cover">
 			<div>
 				<h2 class="uppercase text-xs mb-4">
 					Hero Summary
